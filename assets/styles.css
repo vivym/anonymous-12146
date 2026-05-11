@@ -114,19 +114,13 @@ a {
 }
 
 .section__header h2,
-.section__subheader h3,
 .results-block h3 {
   margin: 0 0 10px;
 }
 
-.section__header p,
-.section__subheader p {
+.section__header p {
   margin: 0;
   color: var(--muted);
-}
-
-.section__subheader {
-  margin: 34px 0 16px;
 }
 
 .hero {
@@ -153,8 +147,37 @@ a {
   font-size: clamp(1.06rem, 1.8vw, 1.35rem);
 }
 
+.hero__summary {
+  max-width: 680px;
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
 .hero__media {
   min-width: 0;
+}
+
+.hero-cover {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.hero-cover img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.hero-cover figcaption {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding: 12px 14px;
 }
 
 .eyebrow {
@@ -271,9 +294,21 @@ a {
   text-transform: uppercase;
 }
 
+.body-copy {
+  max-width: 900px;
+  margin: 0 0 24px;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.body-copy--after-grid {
+  margin-top: 24px;
+}
+
 .task-grid,
-.comparison-grid,
-.method-cards {
+.method-cards,
+.info-grid,
+.task-summary-grid {
   display: grid;
   gap: 16px;
 }
@@ -282,13 +317,22 @@ a {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.comparison-grid,
+.info-grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.task-summary-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .method-cards {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .task-card,
+.info-card,
 .method-card,
+.task-summary-card,
 .results-block,
 .supplement-note {
   border: 1px solid var(--line);
@@ -298,30 +342,34 @@ a {
 }
 
 .task-card,
-.method-card {
+.info-card,
+.method-card,
+.task-summary-card {
   padding: 14px;
 }
 
 .task-card h3,
-.method-card h3 {
+.info-card h3,
+.method-card h3,
+.task-summary-card h3 {
   margin: 16px 0 8px;
   font-size: 1.05rem;
   line-height: 1.22;
 }
 
 .task-card p,
-.method-card p {
+.info-card p,
+.method-card p,
+.task-summary-card p {
   margin: 0;
   color: var(--muted);
   font-size: 0.94rem;
 }
 
-.task-card--compact .media-slot {
-  min-height: 130px;
-}
-
 .method-figure {
-  margin: 0 0 18px;
+  align-self: center;
+  width: min(100%, 960px);
+  margin: 0 auto 18px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
@@ -341,6 +389,7 @@ a {
   padding: 14px 16px;
 }
 
+.method-figure--teleop,
 .method-figure--traces {
   margin-top: 22px;
 }
@@ -425,8 +474,13 @@ a {
 }
 
 @media (max-width: 1040px) {
-  .task-grid {
+  .task-grid,
+  .task-summary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .info-grid--three {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -470,7 +524,7 @@ a {
 
   .metric-grid,
   .task-grid,
-  .comparison-grid,
+  .task-summary-grid,
   .method-cards {
     grid-template-columns: 1fr;
   }

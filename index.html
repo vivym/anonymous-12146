@@ -13,8 +13,10 @@
       <a class="nav__brand" href="#overview">SensorlessVLA</a>
       <div class="nav__links">
         <a href="#overview">Overview</a>
-        <a href="#videos">Videos</a>
+        <!-- <a href="#videos">Videos</a> -->
+        <a href="#problem">Problem</a>
         <a href="#method">Method</a>
+        <a href="#tasks">Tasks</a>
         <a href="#results">Results</a>
         <a href="#supplement">Supplement</a>
       </div>
@@ -26,8 +28,9 @@
       <!-- Anonymous review version: no identity-bearing names, public PDF, BibTeX, or code links. -->
       <div class="hero__content">
         <p class="eyebrow">Anonymous Supplementary Website</p>
-        <h1 id="hero-title">SensorlessVLA: A Sensorless Joint VLA-Control Contact-Rich Manipulation Framework</h1>
+        <h1 id="hero-title">SensorlessVLA: A Sensorless Joint VLA-Control Contact-Rich Robotic Manipulation Framework</h1>
         <p class="hero__claim">Contact-rich manipulation without additional external force/torque or tactile sensors.</p>
+        <p class="hero__summary">The paper studies whether visual-language-action policies can handle contact-rich manipulation using onboard interaction traces instead of calibrated force/torque or tactile hardware. SensorlessVLA conditions action generation on residual histories derived from motor-current effort and predicts motion, gripper, and stiffness commands together.</p>
 
         <div class="badge-row" aria-label="Study setting">
           <span class="badge">No external F/T or tactile sensors</span>
@@ -38,7 +41,7 @@
         <div class="metric-grid" aria-label="Headline results">
           <article class="metric-card metric-card--accent">
             <span class="metric-card__value">72.5%</span>
-            <span class="metric-card__label">SensorlessVLA-Control</span>
+            <span class="metric-card__label">SensorlessVLA</span>
           </article>
           <article class="metric-card">
             <span class="metric-card__value">55.0%</span>
@@ -52,6 +55,11 @@
       </div>
 
       <div class="hero__media">
+        <figure class="hero-cover">
+          <img src="assets/figures/exp-overview.jpg" alt="Real-robot experiment setup overview">
+          <figcaption>Real-robot experiment setup overview.</figcaption>
+        </figure>
+        <!-- Summary video placeholder is disabled until a review-safe overview clip is ready.
         <div class="media-slot media-slot--hero" role="img" aria-label="Placeholder for a future summary video">
           <div>
             <span class="media-slot__label">Summary video placeholder</span>
@@ -59,9 +67,11 @@
             <p>Reserved for anonymous review-safe clips.</p>
           </div>
         </div>
+        -->
       </div>
     </section>
 
+    <!-- Task video placeholders are temporarily disabled until review-safe videos are ready.
     <section id="videos" class="section" aria-labelledby="videos-title">
       <div class="section__header">
         <p class="eyebrow">Representative Rollouts</p>
@@ -103,26 +113,28 @@
         </article>
       </div>
 
-      <div class="section__subheader">
-        <h3>Comparison Clips</h3>
-        <p>Reserved for matched representative clips from the primary controls.</p>
+    </section>
+    -->
+
+    <section id="problem" class="section" aria-labelledby="problem-title">
+      <div class="section__header">
+        <p class="eyebrow">Problem Formulation</p>
+        <h2 id="problem-title">Problem And Approach</h2>
+        <p>Contact-rich tasks need both task-level grounding and compliant physical interaction, but common VLA interfaces usually expose only kinematic action channels.</p>
       </div>
 
-      <div class="comparison-grid">
-        <article class="task-card task-card--compact">
-          <div class="media-slot" role="img" aria-label="Motion-only baseline comparison clip placeholder">
-            <span class="media-slot__label">Motion-only baseline</span>
-          </div>
+      <div class="info-grid info-grid--three">
+        <article class="info-card">
+          <h3>Motion-Only Gap</h3>
+          <p>These motion-only chunks can describe where the robot should move, but they do not explicitly include compliance or stiffness commands. This makes approach, first contact, and sustained contact hard to handle with a single learned motion stream.</p>
         </article>
-        <article class="task-card task-card--compact">
-          <div class="media-slot" role="img" aria-label="Fixed-stiffness baseline comparison clip placeholder">
-            <span class="media-slot__label">Fixed-stiffness baseline</span>
-          </div>
+        <article class="info-card">
+          <h3>Sensorless Context</h3>
+          <p>Instead of adding explicit force/torque, tactile, or wrench observations, the policy receives onboard residual history derived from motor-current effort after nominal compensation. The residual history is treated as an imperfect temporal trace of physical interaction.</p>
         </article>
-        <article class="task-card task-card--compact">
-          <div class="media-slot" role="img" aria-label="SensorlessVLA-Control comparison clip placeholder">
-            <span class="media-slot__label">SensorlessVLA-Control</span>
-          </div>
+        <article class="info-card">
+          <h3>Hybrid Action</h3>
+          <p>The policy generates a hybrid action chunk containing joint-space motion references, gripper commands, and log-coordinate Cartesian translational stiffness. Stiffness is therefore learned jointly with motion, rather than fixed as a downstream gain.</p>
         </article>
       </div>
     </section>
@@ -134,9 +146,11 @@
         <p>A slow VLA predicts a hybrid action chunk; a fast impedance controller executes the commanded stiffness during contact.</p>
       </div>
 
+      <p class="body-copy">At each decision step, external and wrist images, language, proprioception, noisy action tokens, flow time, and residual history feed the slow interaction-conditioned flow VLA. The Sensorless Interaction Encoder maps the residual-history window into interaction tokens, and the Sensorless Interaction Adapter injects those tokens into late Action-Expert Blocks through gated cross-attention before the flow readout predicts the hybrid chunk.</p>
+
       <figure class="method-figure">
-        <img src="assets/figures/method-overview.png" alt="SensorlessVLA framework overview">
-        <figcaption>SensorlessVLA couples residual-history-conditioned action generation with high-rate impedance execution.</figcaption>
+        <img src="assets/figures/main-overview.png" alt="SensorlessVLA framework overview">
+        <figcaption>Overview of SensorlessVLA: residual-history-conditioned action generation coupled with high-rate impedance execution.</figcaption>
       </figure>
 
       <div class="method-cards">
@@ -153,13 +167,47 @@
           <p>Demonstrations provide controller-derived compliance-intent labels without external F/T or tactile sensing.</p>
         </article>
       </div>
+
+      <figure class="method-figure method-figure--teleop">
+        <img src="assets/figures/main-teleop.png" alt="Bilateral impedance teleoperation for compliance supervision">
+        <figcaption>Bilateral impedance teleoperation converts controller-side interaction cues into compliance supervision labels.</figcaption>
+      </figure>
+    </section>
+
+    <section id="tasks" class="section" aria-labelledby="tasks-title">
+      <div class="section__header">
+        <p class="eyebrow">Evaluation Protocol</p>
+        <h2 id="tasks-title">Task Suite</h2>
+        <p>Experiments use four real-robot contact tasks with matched data, observations, demonstration budget, randomization, and rollout ordering across methods.</p>
+      </div>
+
+      <p class="body-copy">Each method is evaluated with 30 rollouts per task. The VLA is queried at 10 Hz, while the controller-side command adapter and fast impedance controller execute at the hardware-compatible control rate. Success requires task completion and contact quality, so the evaluation counts both whether the target is completed and whether contact is maintained appropriately.</p>
+
+      <div class="task-summary-grid">
+        <article class="task-summary-card">
+          <h3>Whiteboard Erasing</h3>
+          <p>Sustained planar contact while removing marker traces from a target region.</p>
+        </article>
+        <article class="task-summary-card">
+          <h3>Whiteboard Writing</h3>
+          <p>Fine marker contact while drawing a continuous S-shaped trace without losing or overloading contact.</p>
+        </article>
+        <article class="task-summary-card">
+          <h3>Ethernet Cable Insertion</h3>
+          <p>Contact-guided alignment and seating under tight connector tolerance.</p>
+        </article>
+        <article class="task-summary-card">
+          <h3>Curved-Surface Wiping</h3>
+          <p>Maintaining tool contact while the local surface normal changes along the stroke.</p>
+        </article>
+      </div>
     </section>
 
     <section id="results" class="section" aria-labelledby="results-title">
       <div class="section__header">
         <p class="eyebrow">Real-Robot Evidence</p>
         <h2 id="results-title">Results And Ablations</h2>
-        <p>Reported averages follow the manuscript tables for four real-world contact tasks.</p>
+        <p>Reported averages follow the manuscript tables for the four-task real-robot contact suite.</p>
       </div>
 
       <div class="results-layout">
@@ -176,6 +224,21 @@
               </thead>
               <tbody>
                 <tr>
+                  <td>&pi;<sub>0</sub>-Motion</td>
+                  <td>22.5%</td>
+                  <td>Motion-centric VLA baseline</td>
+                </tr>
+                <tr>
+                  <td>&pi;<sub>0.5</sub>-Motion</td>
+                  <td>29.2%</td>
+                  <td>Motion-centric VLA baseline</td>
+                </tr>
+                <tr>
+                  <td>SmolVLA-Motion</td>
+                  <td>25.8%</td>
+                  <td>Motion-centric VLA baseline</td>
+                </tr>
+                <tr>
                   <td>SensorlessVLA-Motion-Only</td>
                   <td>32.5%</td>
                   <td>Same-family motion-only baseline</td>
@@ -186,7 +249,7 @@
                   <td>Same-architecture fixed-stiffness baseline</td>
                 </tr>
                 <tr class="results-table__highlight">
-                  <td>SensorlessVLA-Control</td>
+                  <td>SensorlessVLA</td>
                   <td>72.5%</td>
                   <td>Full method</td>
                 </tr>
@@ -202,15 +265,17 @@
             <div><dt>Direct Residual Fusion</dt><dd>57.5%</dd></div>
             <div><dt>Fixed Stiffness</dt><dd>55.0%</dd></div>
             <div><dt>No Cartesian Impedance Path</dt><dd>32.5%</dd></div>
-            <div><dt>Same Motion + Fixed Labels</dt><dd>47.5%</dd></div>
-            <div><dt>SensorlessVLA-Control</dt><dd>72.5%</dd></div>
+            <div><dt>Same Bilateral Motion + Fixed Labels</dt><dd>47.5%</dd></div>
+            <div><dt>SensorlessVLA</dt><dd>72.5%</dd></div>
           </dl>
         </div>
       </div>
 
+      <p class="body-copy body-copy--after-grid">SensorlessVLA reaches 72.5% average success, compared with 32.5% for the strongest same-family motion-only baseline and 55.0% for the same-architecture fixed-stiffness baseline. The manuscript interprets this gap as evidence that residual-conditioned, time-varying stiffness helps across both sustained contact and phase changes, while the plotted stiffness traces show commanded impedance parameters rather than measured forces.</p>
+
       <figure class="method-figure method-figure--traces">
-        <img src="assets/figures/stiffness-traces.png" alt="Phase-aligned commanded translational stiffness traces">
-        <figcaption>Phase-aligned commanded translational stiffness traces. These are commanded impedance parameters, not measured forces.</figcaption>
+        <img src="assets/figures/main-figure3.png" alt="Representative phase-aligned commanded translational stiffness traces">
+        <figcaption>Representative phase-aligned commanded stiffness traces. These are commanded impedance parameters, not measured forces.</figcaption>
       </figure>
     </section>
 
