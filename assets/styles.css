@@ -305,6 +305,11 @@ a {
   margin-top: 24px;
 }
 
+.section--muted > .body-copy {
+  max-width: 760px;
+  margin: 0 auto 24px;
+}
+
 .task-grid,
 .method-cards,
 .info-grid,
