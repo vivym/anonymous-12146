@@ -37,6 +37,11 @@ img {
   max-width: 100%;
 }
 
+video {
+  display: block;
+  max-width: 100%;
+}
+
 a {
   color: inherit;
 }
@@ -125,37 +130,48 @@ a {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
+  grid-template-columns: 1fr;
+  align-items: start;
   gap: 34px;
+  width: 100%;
+  max-width: none;
   min-height: calc(100vh - 66px);
   padding-top: 42px;
 }
 
 .hero__content h1 {
-  max-width: 780px;
-  margin: 0;
-  font-size: clamp(2.35rem, 4.5vw, 4.15rem);
-  line-height: 0.98;
+  max-width: min(100%, 1680px);
+  margin: 0 auto;
+  font-size: clamp(2.35rem, 3.85vw, 4.4rem);
+  line-height: 1.04;
   letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.hero__content {
+  width: min(100%, 1680px);
+  margin-inline: auto;
+  text-align: center;
 }
 
 .hero__claim {
-  max-width: 660px;
-  margin: 20px 0 0;
+  max-width: 1120px;
+  margin: 20px auto 0;
   color: var(--muted);
   font-size: clamp(1.06rem, 1.8vw, 1.35rem);
 }
 
 .hero__summary {
-  max-width: 680px;
-  margin: 16px 0 0;
+  max-width: 1280px;
+  margin: 16px auto 0;
   color: var(--muted);
   font-size: 1rem;
 }
 
 .hero__media {
+  margin-inline: auto;
   min-width: 0;
+  width: min(100%, 1120px);
 }
 
 .hero-cover {
@@ -167,10 +183,21 @@ a {
   overflow: hidden;
 }
 
+.hero-cover--video {
+  margin: 0 auto;
+}
+
 .hero-cover img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+.hero-cover video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+  object-fit: contain;
 }
 
 .hero-cover figcaption {
@@ -192,6 +219,7 @@ a {
 .badge-row {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
   margin: 24px 0;
 }
@@ -204,43 +232,6 @@ a {
   font-size: 0.88rem;
   font-weight: 680;
   padding: 8px 12px;
-}
-
-.metric-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.metric-card {
-  min-height: 120px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  padding: 18px;
-}
-
-.metric-card--accent {
-  border-color: rgba(27, 111, 95, 0.32);
-  background: #f1faf6;
-}
-
-.metric-card__value {
-  display: block;
-  color: var(--accent-strong);
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 800;
-  line-height: 1;
-}
-
-.metric-card__label {
-  display: block;
-  margin-top: 10px;
-  color: var(--muted);
-  font-size: 0.88rem;
-  font-weight: 720;
-  overflow-wrap: break-word;
 }
 
 .media-slot {
@@ -527,15 +518,10 @@ a {
     padding: 7px 9px;
   }
 
-  .metric-grid,
   .task-grid,
   .task-summary-grid,
   .method-cards {
     grid-template-columns: 1fr;
-  }
-
-  .metric-card {
-    min-height: 0;
   }
 
   .media-slot {
